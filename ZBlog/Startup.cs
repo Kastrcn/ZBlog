@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using ZBlog.Data;
 using ZBlog.Service;
 using ZBlog.Service.impl;
 
@@ -28,10 +30,13 @@ namespace ZBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ZBlogContext>(options =>
+                options.UseMySQL(Configuration.GetConnectionString("ZBlogContext")));
+
             // services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
             // var jwtSettings = new JwtSettings();
             // Configuration.Bind("JwtSettings",jwtSettings);
-            services.TryAddSingleton<IHomeService, HomeService>();
+            services.TryAddScoped<IHomeService, HomeService>();
             services.AddAuthentication(
                 options =>
                 {
@@ -88,11 +93,11 @@ namespace ZBlog
                 app.UseSpa(spa =>
                 {
                     spa.Options.SourcePath = "ClientApp";
-                   
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseReactDevelopmentServer(npmScript: "start");
-                    }
+                    //
+                    // if (env.IsDevelopment())
+                    // {
+                    //     spa.UseReactDevelopmentServer(npmScript: "start");
+                    // }
                 });
             });
            

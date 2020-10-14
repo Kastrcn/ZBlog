@@ -12,6 +12,7 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.8" />
+        <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.21" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,10 +30,6 @@
       <_ContentIncludedByDefault Remove="ClientApp\package.json" />
       <_ContentIncludedByDefault Remove="ClientApp\public\manifest.json" />
       <_ContentIncludedByDefault Remove="ClientApp\tsconfig.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Params" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
