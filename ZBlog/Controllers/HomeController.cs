@@ -1,15 +1,15 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using marked;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ZBlog.Data;
 using ZBlog.Model;
 using ZBlog.Params;
-using ZBlog.RO;
-using ZBlog.Service;
-using ZBlog.Service.impl;
+using ZBlog.Utils;
 using ZBlog.VO;
 
 namespace ZBlog.Controllers
@@ -17,24 +17,52 @@ namespace ZBlog.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ZBlogContext _context;
 
-        private readonly IHomeService _homeService;
 
-        public HomeController(ILogger<HomeController> logger, IHomeService homeService)
+        public HomeController(ILogger<HomeController> logger, ZBlogContext context)
         {
             _logger = logger;
-            _homeService = homeService;
+            _context = context;
         }
 
-        public async Task<IActionResult> Index(HomeIndexParam homeIndexParam)
+        public IActionResult Index(int page, int size, string kw)
         {
-            var homeIndexRo = new HomeIndexRo();
-            homeIndexRo.ArticleVos = await _homeService.GetArticlePageList(homeIndexParam);
-            homeIndexRo.ArticleLatest = await _homeService.GetArticleLatest();
-            homeIndexRo.ArticleComment = null; // await  _homeService.GetArticleComments();
-            // Post.where(:status=>1).left_joins(:comments).group("post_id").order("count(post_id) desc").limit(5)
-            return View(homeIndexRo);
+            IQueryable<Article> articles = from a in _context.Articles
+                where a.Status == 1
+                orderby a.CreatedAt
+                select new Article
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Slug = a.Slug,
+                    Context = a.Context.ToMarkdown().RemoveTags().SplitTags(),
+                    Status = a.Status,
+                    CreatedAt = a.CreatedAt,
+                    UpdatedAt = a.UpdatedAt,
+                };
+            
+            if (!string.IsNullOrEmpty(kw))
+            {
+                //|| item.Context.Contains(kw)
+                articles = articles.Where(item => item.Title.Contains(kw) );
+            }
+           
+
+
+            
+            
+            var articleVos = PaginatedList<Article>
+                .CreateAsync(articles.AsNoTracking(), page | 1, size | 10).Result;
+            return View(articleVos);
         }
+
+
+        public IActionResult Post()
+        {
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {
@@ -43,19 +71,71 @@ namespace ZBlog.Controllers
 
         public IActionResult Archives()
         {
-            return View();
+            var list =
+                _context.Articles.OrderByDescending(item => item.CreatedAt).Select(article => new Article
+                        {Title = article.Title, Slug = article.Slug, CreatedAt = article.CreatedAt}).ToList()
+                    .GroupBy(archives => archives.CreatedAt.ToString("yyyy-MM"))
+                    .Select(item => new Archives {Date = item.Key, List = item.ToList()}).ToList();
+
+            return View(list);
         }
 
         public IActionResult Links()
         {
-            return View();
+            var links = _context.Links.ToList();
+            return View(links);
         }
 
+        
+        
         public IActionResult About()
         {
             return View();
         }
 
+
+        // GET
+
+        [Route("post/{slug}")]
+        public IActionResult Slug(string slug)
+        {
+            var article = _context.Articles.Where(item => item.Slug == slug)
+                .Select(item => new Article
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Slug = item.Slug,
+                    Context = item.Context.ToMarkdown(),
+                    Status = item.Status,
+                    CreatedAt = item.CreatedAt,
+                    UpdatedAt = item.UpdatedAt,
+                }).First();
+            return View(article);
+        }
+        
+        // GET
+
+        [Route("category/{slug}")]
+        public IActionResult Category(string slug,int page,int size)
+        {
+            var article = _context.Articles.Where(item => item.Slug == slug)
+                .Select(item => new Article
+                {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Slug = item.Slug,
+                    Context = item.Context.ToMarkdown(),
+                    Status = item.Status,
+                    CreatedAt = item.CreatedAt,
+                    UpdatedAt = item.UpdatedAt,
+                });
+            var articleVos = PaginatedList<Article>
+                .CreateAsync(article.AsNoTracking(), page | 1, size | 10).Result;
+
+            return View(articleVos);
+        }
+        
+      
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

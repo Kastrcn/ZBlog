@@ -1,20 +1,10 @@
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using ZBlog.Data;
-using ZBlog.Service;
-using ZBlog.Service.impl;
 
 namespace ZBlog
 {
@@ -36,28 +26,10 @@ namespace ZBlog
             // services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
             // var jwtSettings = new JwtSettings();
             // Configuration.Bind("JwtSettings",jwtSettings);
-            services.TryAddScoped<IHomeService, HomeService>();
-            services.AddAuthentication(
-                options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                }
-            ).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidIssuer = "jwtSettings.Issuer",
-                    ValidAudience = "jwtSettings.Audience",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("jwtSettings.SecureKey"))
-                };
-            });
+          
             services.AddMvc().AddXmlSerializerFormatters();
 
             services.AddControllersWithViews();
-
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,7 +48,6 @@ namespace ZBlog
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSpaStaticFiles();
 
             app.UseRouting();
             app.UseAuthorization();
@@ -87,19 +58,19 @@ namespace ZBlog
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            app.MapWhen(x=>x.Request.Path.Value.StartsWith("/user"), builder =>
-            {
-                builder.UseStaticFiles();
-                app.UseSpa(spa =>
-                {
-                    spa.Options.SourcePath = "ClientApp";
-                    //
-                    // if (env.IsDevelopment())
-                    // {
-                    //     spa.UseReactDevelopmentServer(npmScript: "start");
-                    // }
-                });
-            });
+            // app.MapWhen(x=>x.Request.Path.Value.StartsWith("/user"), builder =>
+            // {
+            //     builder.UseStaticFiles();
+            //     app.UseSpa(spa =>
+            //     {
+            //         spa.Options.SourcePath = "ClientApp";
+            //         //
+            //         // if (env.IsDevelopment())
+            //         // {
+            //         //     spa.UseReactDevelopmentServer(npmScript: "start");
+            //         // }
+            //     });
+            // });
            
             
             

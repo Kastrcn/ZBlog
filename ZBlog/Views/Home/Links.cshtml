@@ -1,6 +1,18 @@
+@model List<ZBlog.Model.Link>
 @{
-    ViewData["Title"] = "Links";
+    ViewData["Title"] = "链接";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Links</p>
+@foreach (var link in Model)
+{
+    <div>
+        <span>@link.Logo</span>
+        <span>
+            <span>@link.Name</span>
+            <br>
+            <a>@link.Url</a>
+        </span>
+    </div>
+    <p>@link.Description</p>
+}

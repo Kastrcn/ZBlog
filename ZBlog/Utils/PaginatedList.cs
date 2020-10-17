@@ -32,8 +32,8 @@ namespace ZBlog.Utils
 
         public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, QueryParam queryParam)
         {
-            var pageIndex = queryParam.PageNumber;
-            var pageSize = queryParam.PageSize;
+            var pageIndex = queryParam.PageNumber|1;
+            var pageSize = queryParam.PageSize|10;
 
             var count = await source.CountAsync();
             var items = await source.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();

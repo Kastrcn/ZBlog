@@ -1,6 +1,16 @@
+@model List<ZBlog.VO.Archives>
 @{
-    ViewData["Title"] = "Archives";
+    ViewData["Title"] = "归档";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Archives</p>
+
+@foreach (var archives in Model)
+{
+    <p>@archives.Date</p>
+     @foreach (var item in archives.List)
+     {
+         <a  href="/post/@(item.Slug)"  class="btn btn-primary">@item.Title-@item.CreatedAt.ToString("yyyy-MM-dd")</a>
+     }
+    <br/>
+}
