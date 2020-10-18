@@ -1,0 +1,15 @@
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Dashboard</h2>
+
+
+<div style="display: flex">
+    
+@await Html.PartialAsync("_CategoryCount")
+@await Html.PartialAsync("_CommentCount")
+@await Html.PartialAsync("_PostCount")
+@await Html.PartialAsync("_AccountCount")
+</div>

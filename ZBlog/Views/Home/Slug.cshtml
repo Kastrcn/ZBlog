@@ -1,4 +1,5 @@
 @using Microsoft.AspNetCore.Html
+@using ZBlog.Params
 @model ZBlog.Model.Article
 @{
     ViewBag.Title = "title";
@@ -37,29 +38,7 @@
             <hr>
 
             <!-- Comments Form -->
-            <div class="card my-4">
-                <h5 class="card-header">发表评论：</h5>
-                <div class="card-body">
-                    <form>
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <input type="text" class="form-control" placeholder="用户名" id="inputCity">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <input type="text" class="form-control" placeholder="昵称" id="inputState">
-                            </div>
-                            <div class="form-group col-md-4">
-                                <input type="text" class="form-control" placeholder="网址" id="inputZip">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">提交</button>
-                    </form>
-                </div>
-            </div>
+           @await Html.PartialAsync("_Comment",new CommentParam())
             
 
             <!-- Single Comment -->

@@ -1,8 +1,12 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using marked;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -26,11 +30,13 @@ namespace ZBlog.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int page, int size, string kw)
+        public IActionResult Index(int? page, int? size, string kw)
         {
+           
+            
             IQueryable<Article> articles = from a in _context.Articles
                 where a.Status == 1
-                orderby a.CreatedAt
+                orderby a.CreatedAt descending 
                 select new Article
                 {
                     Id = a.Id,
@@ -47,13 +53,9 @@ namespace ZBlog.Controllers
                 //|| item.Context.Contains(kw)
                 articles = articles.Where(item => item.Title.Contains(kw) );
             }
-           
 
-
-            
-            
             var articleVos = PaginatedList<Article>
-                .CreateAsync(articles.AsNoTracking(), page | 1, size | 10).Result;
+                .CreateAsync(articles.AsNoTracking(),  page ?? 1 , size ?? 10).Result;
             return View(articleVos);
         }
 

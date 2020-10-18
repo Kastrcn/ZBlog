@@ -7,9 +7,72 @@
 
     <ItemGroup>
         <PackageReference Include="markedtest" Version="1.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
-        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.8" />
         <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.21" />
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Post\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Post\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Area\Category\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Area\Category\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Area\Post\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Area\Post\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Post\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Post\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Category\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Comment\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Comment\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Comment\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Comment\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Comment\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Link\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Link\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Link\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Link\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Link\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Post\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Post\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Post\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Views\Shared\_Layout.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Category\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Category\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Category\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Category\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Category\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Comment\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Comment\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Comment\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Comment\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Comment\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Dashboard\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Post\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Post\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Post\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Post\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Post\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Areas\Admin\Pages\Shared\_Layout.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Post\Edit.cshtml" />
+      <UpToDateCheckInput Remove="Views\Post\Index.cshtml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Views\Comment" />
     </ItemGroup>
 
 </Project>

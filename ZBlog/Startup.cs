@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ZBlog.Data;
+using ZBlog.Model;
 
 namespace ZBlog
 {
@@ -20,15 +24,31 @@ namespace ZBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // services.AddDbContext<ZBlogContext>(options =>
+            //     options.UseMySQL(Configuration.GetConnectionString("ZBlogContext")));
+
             services.AddDbContext<ZBlogContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("ZBlogContext")));
-
+            // services.AddDefaultIdentity<Account>(options =>
+            //     {
+            //         options.SignIn.RequireConfirmedAccount = false;
+            //     })
+            //     .AddEntityFrameworkStores<ZBlogContext>();
+            
             // services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
             // var jwtSettings = new JwtSettings();
             // Configuration.Bind("JwtSettings",jwtSettings);
-          
-            services.AddMvc().AddXmlSerializerFormatters();
-
+            // services.AddAuthentication("CookieAuth").AddCookie("CookieAuth", config =>
+            // {
+            //     
+            //     config.Cookie.Name = "Cook.Name";
+            //     config.LoginPath = "/Admin/Account/Login";
+            // });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,option => {
+                // 未登录跳转页面
+                option.LoginPath = "/Admin/Account/Login";
+            });
+           
             services.AddControllersWithViews();
         }
 
@@ -46,31 +66,25 @@ namespace ZBlog
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "MyAreaAdmin",
+                    areaName:"Admin",
+                    pattern: "Admin/{controller=Category}/{action=Index}/{id?}"
+                );
+                
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-            // app.MapWhen(x=>x.Request.Path.Value.StartsWith("/user"), builder =>
-            // {
-            //     builder.UseStaticFiles();
-            //     app.UseSpa(spa =>
-            //     {
-            //         spa.Options.SourcePath = "ClientApp";
-            //         //
-            //         // if (env.IsDevelopment())
-            //         // {
-            //         //     spa.UseReactDevelopmentServer(npmScript: "start");
-            //         // }
-            //     });
-            // });
+         
            
             
             
