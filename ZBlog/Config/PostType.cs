@@ -4,8 +4,15 @@ namespace ZBlog.Config
 {
     public enum PostType
     {
-        [Display(Name = "Male")]Male = 1,
-        [Display(Name = "Female N")]Female = 2,
-        [Display(Name = "Other")]Other = 3 
+        /// <summary>
+        /// 
+        /// </summary>
+        [Display(Name = "草稿")] Draft = 0,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Display(Name = "发布")] Publish = 1,
+        // [Display(Name = "Other")]Other = 3 
     }
 }

@@ -6,7 +6,7 @@ namespace ZBlog.Controllers
     public class CommentController : Controller
     {
         // GET
-        public IActionResult Index([Bind("UserName,Nickname,Website")] CommentParam commentParam)
+        public IActionResult Index([Bind("PostId,UserName,Nickname,Website")] CommentParam commentParam)
         {
             if (ModelState.IsValid)
             {

@@ -49,23 +49,28 @@ namespace ZBlog.Areas.Admin.controller
         
             if (ModelState.IsValid)
             {
-                
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var claims = new List<Claim>
+                if (input.UserName == "admin" && input.Password == "admin")
                 {
-                    new Claim(ClaimTypes.Name, "username"),
-                    new Claim(ClaimTypes.Role, "admin")
-                };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, "username"),
+                        new Claim(ClaimTypes.Role, "admin")
+                    };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         
-                var result =
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-                return LocalRedirect(returnUrl);
+                    var result =
+                        HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
+                    return LocalRedirect(returnUrl);
+                }
+                ModelState.AddModelError(string.Empty, "用户名密码错误!");
+                return View();
                 // var result = await ;//await _signInManager.PasswordSignInAsync(input.UserName, input.Password, input.RememberMe, lockoutOnFailure: false);
             }
-        
+          
+
             // If we got this far, something failed, redisplay form
             return View();
         }

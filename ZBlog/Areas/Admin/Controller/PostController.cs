@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ZBlog.Config;
 using ZBlog.Data;
 using ZBlog.Model;
 
@@ -25,7 +26,7 @@ namespace ZBlog.Areas.Admin.controller
         // GET: Admin/Post
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Articles.OrderByDescending(a=>a.CreatedAt).ToListAsync());
+            return View(await _context.Articles.OrderByDescending(a => a.CreatedAt).ToListAsync());
         }
 
         // GET: Admin/Post/Details/5
@@ -49,6 +50,10 @@ namespace ZBlog.Areas.Admin.controller
         // GET: Admin/Post/Create
         public IActionResult Create()
         {
+            ViewBag.PostType = from PostType d in Enum.GetValues(typeof(PostType))
+                select new {Id = (int) d, Name = d.ToString()};
+
+            ViewBag.Categories = _context.Categories.ToList();
             return View();
         }
 
@@ -57,7 +62,8 @@ namespace ZBlog.Areas.Admin.controller
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Slug,Context,Status,CreatedAt,UpdatedAt")] Article article)
+        public async Task<IActionResult> Create([Bind("Id,Title,Slug,Context,Status,CreatedAt,UpdatedAt")]
+            Article article)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +71,7 @@ namespace ZBlog.Areas.Admin.controller
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(article);
         }
 
@@ -81,6 +88,9 @@ namespace ZBlog.Areas.Admin.controller
             {
                 return NotFound();
             }
+
+            ViewBag.Categories = _context.Categories.ToList();
+
             return View(article);
         }
 
@@ -89,7 +99,8 @@ namespace ZBlog.Areas.Admin.controller
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Title,Slug,Context,Status,CreatedAt,UpdatedAt")] Article article)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,Title,Slug,Context,Status,CreatedAt,UpdatedAt")]
+            Article article)
         {
             if (id != article.Id)
             {
@@ -114,8 +125,10 @@ namespace ZBlog.Areas.Admin.controller
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(article);
         }
 

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,31 +25,17 @@ namespace ZBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddDbContext<ZBlogContext>(options =>
-            //     options.UseMySQL(Configuration.GetConnectionString("ZBlogContext")));
-
             services.AddDbContext<ZBlogContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("ZBlogContext")));
-            // services.AddDefaultIdentity<Account>(options =>
-            //     {
-            //         options.SignIn.RequireConfirmedAccount = false;
-            //     })
-            //     .AddEntityFrameworkStores<ZBlogContext>();
-            
-            // services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
-            // var jwtSettings = new JwtSettings();
-            // Configuration.Bind("JwtSettings",jwtSettings);
-            // services.AddAuthentication("CookieAuth").AddCookie("CookieAuth", config =>
-            // {
-            //     
-            //     config.Cookie.Name = "Cook.Name";
-            //     config.LoginPath = "/Admin/Account/Login";
-            // });
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,option => {
-                // 未登录跳转页面
-                option.LoginPath = "/Admin/Account/Login";
-            });
-           
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+                CookieAuthenticationDefaults.AuthenticationScheme, option =>
+                {
+                    // 未登录跳转页面
+                    option.LoginPath = "/Admin/Account/Login";
+                });
+
             services.AddControllersWithViews();
         }
 
@@ -76,18 +63,14 @@ namespace ZBlog
             {
                 endpoints.MapAreaControllerRoute(
                     name: "MyAreaAdmin",
-                    areaName:"Admin",
+                    areaName: "Admin",
                     pattern: "Admin/{controller=Category}/{action=Index}/{id?}"
                 );
-                
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
-         
-           
-            
-            
         }
     }
 }

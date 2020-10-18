@@ -1,3 +1,4 @@
+@using ZBlog.Config
 @model IEnumerable<ZBlog.Model.Article>
 
 @{
@@ -19,7 +20,8 @@
                 @Html.DisplayNameFor(model => model.Slug)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                 @Html.DisplayNameFor(model => model.Status)
+
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreatedAt)
