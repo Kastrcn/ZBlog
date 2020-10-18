@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <IsPackable>false</IsPackable>
+        <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
+        <UserSecretsId>12b6bf8a-cfe1-4a85-80b5-fed098c975dd</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
