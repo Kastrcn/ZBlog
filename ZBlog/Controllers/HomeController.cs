@@ -14,6 +14,7 @@ using ZBlog.Data;
 using ZBlog.Model;
 using ZBlog.Params;
 using ZBlog.Utils;
+using ZBlog.ViewModel;
 using ZBlog.VO;
 
 namespace ZBlog.Controllers
@@ -101,6 +102,10 @@ namespace ZBlog.Controllers
         [Route("post/{slug}")]
         public IActionResult Slug(string slug)
         {
+
+            
+            
+            
             var article = _context.Articles.Where(item => item.Slug == slug)
                 .Select(item => new Article
                 {
@@ -112,7 +117,8 @@ namespace ZBlog.Controllers
                     CreatedAt = item.CreatedAt,
                     UpdatedAt = item.UpdatedAt,
                 }).First();
-            return View(article);
+            var model=new HomeSlugViewModel(article);
+            return View(model);
         }
         
         // GET

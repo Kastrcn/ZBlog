@@ -1,40 +1,43 @@
-@model ZBlog.Params.CommentParam
+@model ZBlog.ViewModel.CommentViewModel
 <div class="card my-4">
     <h5 class="card-header">发表评论：</h5>
     <div class="card-body">
-        <form asp-action="Index" asp-controller="Comment">
+        <form asp-action="Create" asp-controller="Comment"
+              data-ajax-begin="onCommentBegin"
+              data-ajax-complete="onCommentComplete"
+              data-ajax-failure="onCommentFailed"
+              data-ajax-success="onCommentSuccess"
+              data-ajax="true"
+              data-ajax-method="POST">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="PostId"/>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label asp-for="UserName" class="control-label"></label>
-                    <input asp-for="UserName" class="form-control"/>
-                    <span asp-validation-for="UserName" class="text-danger"></span>
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control"/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-4">
-                    <label asp-for="Nickname" class="control-label"></label>
-                    <input asp-for="Nickname" class="form-control"/>
-                    <span asp-validation-for="Nickname" class="text-danger"></span>
+                    <label asp-for="NickName" class="control-label"></label>
+                    <input asp-for="NickName" class="form-control"/>
+                    <span asp-validation-for="NickName" class="text-danger"></span>
                 </div>
                 <div class="form-group col-md-4">
-                    <label asp-for="Website" class="control-label"></label>
-                    <input asp-for="Website" class="form-control"/>
-                    <span asp-validation-for="Website" class="text-danger"></span>
+                    <label asp-for="WebSite" class="control-label"></label>
+                    <input asp-for="WebSite" class="form-control"/>
+                    <span asp-validation-for="WebSite" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="Context" class="control-label"></label>
-                <textarea asp-for="Context"  rows="3" class="form-control"></textarea>
-                <span asp-validation-for="Context" class="text-danger"></span>
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content"  rows="3" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="提交" class="btn btn-primary" />
+                <input type="submit" id="btn-submit-comment" value="提交" class="btn btn-primary"/>
             </div>
 
         </form>
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

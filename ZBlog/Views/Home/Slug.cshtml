@@ -1,6 +1,6 @@
 @using Microsoft.AspNetCore.Html
 @using ZBlog.Params
-@model ZBlog.Model.Article
+@model ZBlog.ViewModel.HomeSlugViewModel
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
@@ -12,7 +12,7 @@
         <div class="col-lg-8">
 
             <!-- Title -->
-            <h1 class="mt-4">@Model.Title</h1>
+            <h1 class="mt-4">@Model.Article.Title</h1>
 
             <!-- Author -->
             <p class="lead">
@@ -22,7 +22,7 @@
 
             <hr>
             <!-- Date/Time -->
-            <p>Posted on @Model.UpdatedAt.ToLongDateString()</p>
+            <p>Posted on @Model.Article.UpdatedAt.ToLongDateString()</p>
 
             <hr>
 
@@ -33,41 +33,18 @@
 
             <!-- Post Content -->
 
-            @(new HtmlString(Model.Context))
+            @(new HtmlString(Model.Article.Context))
 
             <hr>
 
             <!-- Comments Form -->
             @* <partial name="_Comment" model="typeof(CommentParam)"></partial> *@
-           @await Html.PartialAsync("_Comment",new CommentParam())
+            @await Html.PartialAsync("_Comment",Model.CommentViewModel)
+            @await Html.PartialAsync("_Commented",Model.Article)
             
 
-            <!-- Single Comment -->
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                    <h5 class="mt-0">用户名</h5>
-                    评论内容
-                </div>
-            </div>
-
-            <!-- Comment with nested comments -->
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                <div class="media-body">
-                    <h5 class="mt-0">Commenter Name</h5>
-                    Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-
-                    <div class="media mt-4">
-                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                        <div class="media-body">
-                            <h5 class="mt-0">Commenter Name</h5>
-                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            
+            
 
         </div>
 
@@ -75,3 +52,10 @@
     </div>
     <!-- /.row -->
 </div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/lib/jquery.unobtrusive-ajax/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/js/comments.js"></script>
+
+}
