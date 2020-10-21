@@ -30,6 +30,10 @@ namespace ZBlog.Areas.Admin.controller
             return View(await _context.Categories.ToListAsync());
         }
 
+         
+
+
+
         // GET: Admin/Category/Details/5
         public async Task<IActionResult> Details(long? id)
         {

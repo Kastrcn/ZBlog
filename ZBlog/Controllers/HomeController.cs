@@ -33,11 +33,9 @@ namespace ZBlog.Controllers
 
         public IActionResult Index(int? page, int? size, string kw)
         {
-           
-            
             IQueryable<Article> articles = from a in _context.Articles
                 where a.Status == 1
-                orderby a.CreatedAt descending 
+                orderby a.CreatedAt descending
                 select new Article
                 {
                     Id = a.Id,
@@ -48,15 +46,15 @@ namespace ZBlog.Controllers
                     CreatedAt = a.CreatedAt,
                     UpdatedAt = a.UpdatedAt,
                 };
-            
+
             if (!string.IsNullOrEmpty(kw))
             {
                 //|| item.Context.Contains(kw)
-                articles = articles.Where(item => item.Title.Contains(kw) );
+                articles = articles.Where(item => item.Title.Contains(kw));
             }
 
             var articleVos = PaginatedList<Article>
-                .CreateAsync(articles.AsNoTracking(),  page ?? 1 , size ?? 10).Result;
+                .CreateAsync(articles.AsNoTracking(), page ?? 1, size ?? 10).Result;
             return View(articleVos);
         }
 
@@ -89,8 +87,7 @@ namespace ZBlog.Controllers
             return View(links);
         }
 
-        
-        
+
         public IActionResult About()
         {
             return View();
@@ -102,10 +99,6 @@ namespace ZBlog.Controllers
         [Route("post/{slug}")]
         public IActionResult Slug(string slug)
         {
-
-            
-            
-            
             var article = _context.Articles.Where(item => item.Slug == slug)
                 .Select(item => new Article
                 {
@@ -117,15 +110,16 @@ namespace ZBlog.Controllers
                     CreatedAt = item.CreatedAt,
                     UpdatedAt = item.UpdatedAt,
                 }).First();
-            var model=new HomeSlugViewModel(article);
+            var model = new HomeSlugViewModel(article);
             return View(model);
         }
-        
+
         // GET
 
-        [Route("category/{slug}")]
-        public IActionResult Category(string slug,int page,int size)
+        [Route("category/list/{slug}")]
+        public async Task<IActionResult> Category(string slug, int page, int size)
         {
+            var category = await _context.Categories.FirstOrDefaultAsync(item => item.Slug == slug);
             var article = _context.Articles.Where(item => item.Slug == slug)
                 .Select(item => new Article
                 {
@@ -140,10 +134,12 @@ namespace ZBlog.Controllers
             var articleVos = PaginatedList<Article>
                 .CreateAsync(article.AsNoTracking(), page | 1, size | 10).Result;
 
-            return View(articleVos);
+            var homeCategoryViewModel = new HomeCategoryViewModel();
+            homeCategoryViewModel.Articles = articleVos;
+            homeCategoryViewModel.Category = category;
+            return View(homeCategoryViewModel);
         }
-        
-      
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

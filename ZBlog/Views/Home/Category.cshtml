@@ -1,5 +1,5 @@
 @using Microsoft.AspNetCore.Html
-@model ZBlog.Utils.PaginatedList<ZBlog.Model.Article>
+@model ZBlog.ViewModel.HomeCategoryViewModel 
 
 
 @{
@@ -13,10 +13,10 @@
         <!-- Blog Entries Column -->
         <div class="col-md-8">
             <h1 class="my-4">
-                ZBlog
-                <small>--zblog</small>
+                分类
+                <small>@Model.Category.SlugName</small>
             </h1>
-            @foreach (var modelArticle in Model)
+            @foreach (var modelArticle in Model.Articles)
             {
                 <!-- Blog Post -->
                 <div class="card mb-4">
@@ -34,7 +34,7 @@
             }
             <!-- Pagination -->
             <ul class="pagination justify-content-center mb-4">
-                <li class="page-item @(Model.HasNextPage ? "" : "disabled") ">
+                <li class="page-item @(Model.Articles.HasNextPage ? "" : "disabled") ">
                     @* <a class="page-link" *@
                     @*    asp-controller="Home" *@
                     @*    asp-action="Index" *@
@@ -43,7 +43,7 @@
                     @*     &larr; 上一页 *@
                     @* </a> *@
                 </li>
-                <li class="page-item @(Model.HasNextPage ? "" : "disabled")  ">
+                <li class="page-item @(Model.Articles.HasNextPage ? "" : "disabled")  ">
                     @* <a class="page-link" *@
                     @*    asp-controller="Home" *@
                     @*    asp-action="Index" *@

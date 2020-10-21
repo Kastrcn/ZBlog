@@ -1,0 +1,18 @@
+@using ZBlog.Data
+@inject ZBlogContext _context
+@{
+    var categories = _context.Categories.ToList();
+}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        分类
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+        @foreach (var category in categories)
+        {
+            <a class="dropdown-item" href="/category/list/@(category.Slug)" >@category.Name</a>
+        }
+
+    </div>
+</li>
