@@ -1,4 +1,4 @@
-@model IEnumerable<ZBlog.Model.Link>
+@model IEnumerable<ZBlog.Areas.Admin.Dtos.LinkListDto>
 
 @{
     ViewData["Title"] = "列表";
@@ -20,9 +20,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Priority)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Team)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Url)
@@ -50,9 +47,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Priority)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Team)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Url)

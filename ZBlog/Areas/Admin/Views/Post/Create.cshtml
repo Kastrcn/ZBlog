@@ -1,5 +1,5 @@
 @using ZBlog.Config
-@model ZBlog.Model.Article
+@model ZBlog.Areas.Admin.Dtos.PostAddDto
 
 @{
     ViewData["Title"] = "创建";
@@ -8,19 +8,19 @@
 <h1>创建</h1>
 
 <h4>文章</h4>
-<hr />
+<hr/>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Slug" class="control-label"></label>
-                <input asp-for="Slug" class="form-control" />
+                <input asp-for="Slug" class="form-control"/>
                 <span asp-validation-for="Slug" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -29,31 +29,41 @@
                 <span asp-validation-for="Context" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Context" class="control-label">分类</label>
-                <select asp-for="Context" multiple  title="请选择分类" class="form-control selectpicker "
-                            asp-items="@(new SelectList(ViewBag.Categories,"Id","Name"))">
-                    </select>
-                  <span asp-validation-for="Context" class="text-danger"></span>
+                <label asp-for="CategoryId" class="control-label">分类</label>
+                <select asp-for="CategoryId" title="请选择分类" class="form-control  "
+                        asp-items="@(new SelectList(ViewBag.Categories, "Id", "Name"))">
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
+            
+            <div class="form-group">
+                  <label asp-for="TagIds" class="control-label">标签</label>
+                                <select asp-for="TagIds" data-live-search="true" multiple title="请选择分类" class="form-control selectpicker  "
+                                        asp-items="@(new SelectList(ViewBag.Tags, "Id", "Name"))">
+                                </select>
+                <span asp-validation-for="TagIds" class="text-danger"></span>
+               
+            </div>
+            
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status"   title="类型" class="form-control"
+                <select asp-for="Status" title="类型" class="form-control"
                         asp-items="Html.GetEnumSelectList<PostType>()">
                 </select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                <label asp-for="CreateTime" class="control-label"></label>
+                <input asp-for="CreateTime" class="form-control" />
+                <span asp-validation-for="CreateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
+                <label asp-for="UpdateTime" class="control-label"></label>
+                <input asp-for="UpdateTime" class="form-control" />
+                <span asp-validation-for="UpdateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="创建" class="btn btn-primary" />
+                <input type="submit" value="创建" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -64,5 +74,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }

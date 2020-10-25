@@ -1,6 +1,6 @@
 @using ZBlog.Config
 @using Microsoft.AspNetCore.Mvc.Rendering
-@model ZBlog.Model.Article
+@model ZBlog.Areas.Admin.Dtos.PostDto
 
 @{
     ViewData["Title"] = "详情";
@@ -40,16 +40,16 @@
 
 
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
+            @Html.DisplayNameFor(model => model.CreateTime)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
+            @Html.DisplayFor(model => model.CreateTime)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UpdatedAt)
+            @Html.DisplayNameFor(model => model.UpdateTime)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UpdatedAt)
+            @Html.DisplayFor(model => model.UpdateTime)
         </dd>
     </dl>
 </div>

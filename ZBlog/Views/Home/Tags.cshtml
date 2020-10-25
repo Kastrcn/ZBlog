@@ -1,0 +1,14 @@
+@model System.Collections.Generic.List<ZBlog.Data.Entity.Tag>
+
+@{
+    ViewBag.Title = "标签";
+    Layout = "_Layout";
+}
+
+<h1>@ViewData["标签"]</h1>
+
+
+@foreach (var tag in Model)
+{
+    <a  href="/tag/list/@(tag.Slug)"  class="btn btn-primary">@tag.Name</a>
+}

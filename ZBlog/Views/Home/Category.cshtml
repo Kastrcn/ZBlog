@@ -3,8 +3,7 @@
 
 
 @{
-    ViewData["Title"] = "Home Page";
-    ViewBag.Title = "title";
+    ViewData["Title"] =$"分类:{Model.Category.Name}";
     Layout = "_Layout";
 }
 <!-- Page Content -->
@@ -14,9 +13,9 @@
         <div class="col-md-8">
             <h1 class="my-4">
                 分类
-                <small>@Model.Category.SlugName</small>
+                <small>@Model.Category.Name</small>
             </h1>
-            @foreach (var modelArticle in Model.Articles)
+            @foreach (var modelArticle in Model.Posts)
             {
                 <!-- Blog Post -->
                 <div class="card mb-4">
@@ -30,11 +29,12 @@
                         Posted on @modelArticle.UpdatedAt.ToLongDateString() by
                         <span >ZBlog</span>
                     </div>
+                    
                 </div>
             }
             <!-- Pagination -->
             <ul class="pagination justify-content-center mb-4">
-                <li class="page-item @(Model.Articles.HasNextPage ? "" : "disabled") ">
+                <li class="page-item @(Model.Posts.HasNextPage ? "" : "disabled") ">
                     @* <a class="page-link" *@
                     @*    asp-controller="Home" *@
                     @*    asp-action="Index" *@
@@ -43,7 +43,7 @@
                     @*     &larr; 上一页 *@
                     @* </a> *@
                 </li>
-                <li class="page-item @(Model.Articles.HasNextPage ? "" : "disabled")  ">
+                <li class="page-item @(Model.Posts.HasNextPage ? "" : "disabled")  ">
                     @* <a class="page-link" *@
                     @*    asp-controller="Home" *@
                     @*    asp-action="Index" *@

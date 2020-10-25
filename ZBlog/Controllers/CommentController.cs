@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ZBlog.Data;
-using ZBlog.Model;
+using ZBlog.Data.Entity;
 using ZBlog.Params;
 using ZBlog.ViewModel;
 
@@ -47,6 +47,7 @@ namespace ZBlog.Controllers
                     WebSite = commentViewModel.WebSite,
                     CreateTime = DateTime.Now,
                     UpdateTime = DateTime.Now,
+                    IpAddress = HttpContext.Connection.RemoteIpAddress.ToString()
                 });
                 await _context.SaveChangesAsync();
                 return Json(new { a="123" });
@@ -62,7 +63,7 @@ namespace ZBlog.Controllers
             //     Username = commentPostModel.Username,
             //     Content = commentPostModel.Content,
             //     Email = commentPostModel.Email,
-            //     IpAddress = HttpContext.Connection.RemoteIpAddress.ToString()
+            //    
             // });
 
 

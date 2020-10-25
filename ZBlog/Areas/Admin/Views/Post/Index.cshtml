@@ -1,5 +1,5 @@
 @using ZBlog.Config
-@model IEnumerable<ZBlog.Model.Article>
+@model IEnumerable<ZBlog.Areas.Admin.Dtos.PostListDto>
 
 @{
     ViewData["Title"] = "文章列表";
@@ -20,14 +20,16 @@
                 @Html.DisplayNameFor(model => model.Slug)
             </th>
             <th>
+                 @Html.DisplayNameFor(model => model.PostTags)
+            </th>
+            <th>
                  @Html.DisplayNameFor(model => model.Status)
-
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
+                @Html.DisplayNameFor(model => model.CreateTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UpdatedAt)
+                @Html.DisplayNameFor(model => model.UpdateTime)
             </th>
             <th></th>
         </tr>
@@ -41,15 +43,21 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Slug)
             </td>
+            <td>
+                @foreach (var itemPostTag in item.PostTags)
+                {
+                    <span class="badge badge-success">@itemPostTag.Tag.Name</span>
+                }
+            </td>
            
             <td>
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
+                @Html.DisplayFor(modelItem => item.CreateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UpdatedAt)
+                @Html.DisplayFor(modelItem => item.UpdateTime)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">修改</a> |

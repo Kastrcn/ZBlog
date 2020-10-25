@@ -1,4 +1,4 @@
-@model ZBlog.Model.Link
+@model ZBlog.Areas.Admin.Dtos.LinkDto
 
 @{
     ViewData["Title"] = "详情";
@@ -28,12 +28,7 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Priority)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Team)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Team)
-        </dd>
+      
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Url)
         </dt>

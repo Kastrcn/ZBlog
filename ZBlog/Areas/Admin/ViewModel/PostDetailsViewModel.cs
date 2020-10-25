@@ -1,32 +1,39 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ZBlog.Config;
+using ZBlog.Data.Entity;
 
-namespace ZBlog.Model
+namespace ZBlog.Areas.Admin.ViewModel
 {
-    [Table("article")]
-    public class Article
+    public class PostDetailsViewModel
     {
-        [Key]
+        /// <summary>
+        /// id
+        /// </summary>
         public long Id { get; set; }
-        [Display(Name = "标题")]
-        public string Title { get; set; }
-        [Display(Name = "Slug")]
-        public string Slug { get; set; }
-        [Display(Name = "内容")]
-        public string Context { get; set; }
-        [Display(Name = "状态")]
-        [EnumDataType(typeof(PostType))]
-        public int Status { get; set; }
-        [Display(Name = "创建时间")]
-        [Column("created_at")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd  HH:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime CreatedAt { get; set; }
-        [Display(Name = "修改时间")]
-        [Column("updated_at")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd  HH:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime UpdatedAt { get; set; }
 
+        public string CategoryName { get; set; }
+        public string Tags { get; set; }
+        public string Title { get; set; }
+
+        public string Slug { get; set; }
+        public string Context { get; set; }
+        public string Status { get; set; }
+
+        /// <summary>
+        /// CreateTime
+        /// </summary>
+        [Display(Name = "创建时间")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd  HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime CreateTime { get; set; }
+
+        /// <summary>
+        /// UpdateTime
+        /// </summary>
+        [Display(Name = "修改时间")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd  HH:mm:ss}", ApplyFormatInEditMode = true)]
+        public DateTime UpdateTime { get; set; }
     }
 }

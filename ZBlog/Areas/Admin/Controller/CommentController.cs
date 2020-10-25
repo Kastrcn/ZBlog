@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ZBlog.Areas.Admin.ViewModel;
 using ZBlog.Data;
-using ZBlog.Model;
+using ZBlog.Data.Entity;
 
 namespace ZBlog.Areas.Admin.controller
 {
@@ -14,10 +13,12 @@ namespace ZBlog.Areas.Admin.controller
     public class CommentController : Controller
     {
         private readonly ZBlogContext _context;
+        private readonly IMapper _mapper;
 
-        public CommentController(ZBlogContext context)
+        public CommentController(ZBlogContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Admin/Comment
@@ -79,7 +80,8 @@ namespace ZBlog.Areas.Admin.controller
             {
                 return NotFound();
             }
-            return View(comment);
+            var commentEditViewModel = _mapper.Map<Comment,CommentEditViewModel>(comment);
+            return View(commentEditViewModel);
         }
 
         // POST: Admin/Comment/Edit/5
@@ -87,23 +89,20 @@ namespace ZBlog.Areas.Admin.controller
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,PostId,Content,Reply,CreateTime,UpdateTime")] Comment comment)
+        public async Task<IActionResult> Edit(long id, [FromForm] CommentEditViewModel commentEditViewModel)
         {
-            if (id != comment.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(comment);
+                    var comment = await _context.Comments.SingleAsync(item => item.Id == commentEditViewModel.Id);
+                    var data = _mapper.Map<CommentEditViewModel, Comment>(commentEditViewModel,comment);
+                    _context.Update(data);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CommentExists(comment.Id))
+                    if (!CommentExists(commentEditViewModel.Id))
                     {
                         return NotFound();
                     }
@@ -114,7 +113,7 @@ namespace ZBlog.Areas.Admin.controller
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(comment);
+            return View(commentEditViewModel);
         }
 
         // GET: Admin/Comment/Delete/5

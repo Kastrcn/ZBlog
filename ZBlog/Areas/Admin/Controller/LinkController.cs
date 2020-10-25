@@ -1,13 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ZBlog.Areas.Admin.Dtos;
 using ZBlog.Data;
-using ZBlog.Model;
+using ZBlog.Data.Entity;
 
 namespace ZBlog.Areas.Admin.controller
 {
@@ -16,16 +16,18 @@ namespace ZBlog.Areas.Admin.controller
     public class LinkController : Controller
     {
         private readonly ZBlogContext _context;
+        private readonly IMapper _mapper;
 
-        public LinkController(ZBlogContext context)
+        public LinkController(ZBlogContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Admin/Link
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Links.ToListAsync());
+            return View(_mapper.Map<IEnumerable<LinkListDto>>(await _context.Links.ToListAsync()));
         }
 
         // GET: Admin/Link/Details/5
@@ -42,8 +44,7 @@ namespace ZBlog.Areas.Admin.controller
             {
                 return NotFound();
             }
-
-            return View(link);
+            return View(_mapper.Map<LinkDto>(link));
         }
 
         // GET: Admin/Link/Create
@@ -57,15 +58,18 @@ namespace ZBlog.Areas.Admin.controller
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Logo,Name,Priority,Team,Url,Description,CreateTime,UpdateTime")] Link link)
+        public async Task<IActionResult> Create(
+            [Bind("Logo,Name,Priority,Url,Description")]
+            LinkAddDto linkAddDto)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(link);
+                _context.Add(_mapper.Map<Link>(linkAddDto));
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(link);
+
+            return View(linkAddDto);
         }
 
         // GET: Admin/Link/Edit/5
@@ -81,7 +85,8 @@ namespace ZBlog.Areas.Admin.controller
             {
                 return NotFound();
             }
-            return View(link);
+
+            return View(_mapper.Map<Link, LinkEditDto>(link));
         }
 
         // POST: Admin/Link/Edit/5
@@ -89,23 +94,21 @@ namespace ZBlog.Areas.Admin.controller
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Logo,Name,Priority,Team,Url,Description,CreateTime,UpdateTime")] Link link)
+        public async Task<IActionResult> Edit(long id,
+            [Bind("Id,Logo,Name,Priority,Team,Url,Description,CreateTime,UpdateTime")]
+            LinkEditDto linkEditDto)
         {
-            if (id != link.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(link);
+                    var data = _context.Links.SingleOrDefault(item => item.Id == linkEditDto.Id);
+                    _mapper.Map<LinkEditDto,Link>(linkEditDto,data);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LinkExists(link.Id))
+                    if (!LinkExists(linkEditDto.Id))
                     {
                         return NotFound();
                     }
@@ -114,9 +117,11 @@ namespace ZBlog.Areas.Admin.controller
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(link);
+
+            return View(linkEditDto);
         }
 
         // GET: Admin/Link/Delete/5
@@ -134,7 +139,7 @@ namespace ZBlog.Areas.Admin.controller
                 return NotFound();
             }
 
-            return View(link);
+            return View(_mapper.Map<Link, LinkDto>(link));
         }
 
         // POST: Admin/Link/Delete/5

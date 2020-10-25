@@ -1,13 +1,14 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ZBlog.Areas.Admin.Dtos;
+using ZBlog.Areas.Admin.Params;
 using ZBlog.Data;
-using ZBlog.Model;
+using ZBlog.Data.Entity;
 
 namespace ZBlog.Areas.Admin.controller
 {
@@ -16,22 +17,22 @@ namespace ZBlog.Areas.Admin.controller
     public class CategoryController : Controller
     {
         private readonly ZBlogContext _context;
+        private readonly IMapper _mapper;
 
-        public CategoryController(ZBlogContext context)
+        public CategoryController(ZBlogContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-      
-        
+
         // GET: Admin/Category
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            ;
+
+            return View(_mapper.Map<IEnumerable<CategoryListDto>>(await _context.Categories.ToListAsync()));
         }
-
-         
-
 
 
         // GET: Admin/Category/Details/5
@@ -49,7 +50,7 @@ namespace ZBlog.Areas.Admin.controller
                 return NotFound();
             }
 
-            return View(category);
+            return View(_mapper.Map<Category, CategoryDto>(category));
         }
 
         // GET: Admin/Category/Create
@@ -63,15 +64,17 @@ namespace ZBlog.Areas.Admin.controller
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,SlugName,Slug,Thumbnail,CreateTime,UpdateTime")] Category category)
+        public async Task<IActionResult> Create([Bind("Name,Slug")] CategoryAddDto categoryAddDto)
         {
             if (ModelState.IsValid)
             {
+                var category = _mapper.Map<Category>(categoryAddDto);
                 _context.Add(category);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+
+            return View(categoryAddDto);
         }
 
         // GET: Admin/Category/Edit/5
@@ -82,12 +85,15 @@ namespace ZBlog.Areas.Admin.controller
                 return NotFound();
             }
 
+        
+            
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
-            return View(category);
+
+            return View(_mapper.Map<CategoryEditDto>(category));
         }
 
         // POST: Admin/Category/Edit/5
@@ -95,23 +101,19 @@ namespace ZBlog.Areas.Admin.controller
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,SlugName,Slug,Thumbnail,CreateTime,UpdateTime")] Category category)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,Name,Slug")] CategoryEditDto categoryEditDto)
         {
-            if (id != category.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(category);
+                    var data = _context.Categories.SingleOrDefault(item => item.Id == categoryEditDto.Id);
+                    _mapper.Map<CategoryEditDto,Category>(categoryEditDto,data);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!CategoryExists(categoryEditDto.Id))
                     {
                         return NotFound();
                     }
@@ -120,9 +122,11 @@ namespace ZBlog.Areas.Admin.controller
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+
+            return View(categoryEditDto);
         }
 
         // GET: Admin/Category/Delete/5
@@ -140,7 +144,7 @@ namespace ZBlog.Areas.Admin.controller
                 return NotFound();
             }
 
-            return View(category);
+            return View(_mapper.Map<Category, CategoryDto>(category));
         }
 
         // POST: Admin/Category/Delete/5

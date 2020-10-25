@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using ZBlog.Data.Entity;
+using ZBlog.Model;
 using ZBlog.Params;
 
 namespace ZBlog.Utils

@@ -1,28 +1,48 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
-namespace ZBlog.Model
+namespace ZBlog.Data.Entity
 {
     [Table("account")]
-    public class Account
+    public class Account : EntityBase
     {
-
-        public long Id { get; set; }
         /// <summary>
-        /// 
+        /// id
+        /// </summary>
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
+        public long Id { get; set; }
+
+        /// <summary>
+        /// username
         /// </summary>
         [Required]
         [Display(Name = "用户名")]
-        public String UserName { get; set; }
-        
+        [Column("user_name")]
+        [MaxLength(120)]
+        public string UserName { get; set; }
+
         /// <summary>
-        /// 
+        /// password
         /// </summary>
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name= "密码")]
-        public String Password { get; set; }
+        [Column("password")]
+        [Display(Name = "密码")]
+        [MaxLength(256)]
+        public string Password { get; set; }
+
+        [Required]
+        [Column("email")]
+        [MaxLength(200)]
+        public string Email { get; set; }
+        
+        [Required]
+        [Column("nickname")]
+        [MaxLength(100)]
+        public string NickName { get; set; }
+        
     }
 }

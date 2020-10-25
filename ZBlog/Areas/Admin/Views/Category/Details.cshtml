@@ -1,4 +1,4 @@
-@model ZBlog.Model.Category
+@model ZBlog.Areas.Admin.Dtos.CategoryDto
 
 @{
     ViewData["Title"] = "详情";
@@ -16,23 +16,12 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SlugName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SlugName)
-        </dd>
+     
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Slug)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Slug)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Thumbnail)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Thumbnail)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CreateTime)

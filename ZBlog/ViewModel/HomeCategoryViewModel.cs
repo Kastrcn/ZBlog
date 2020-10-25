@@ -1,11 +1,11 @@
-using ZBlog.Model;
+using ZBlog.Data.Entity;
 using ZBlog.Utils;
 
 namespace ZBlog.ViewModel
 {
     public class HomeCategoryViewModel
     {
-        public PaginatedList<Article> Articles { get; set; }
+        public PaginatedList<PostViewModel> Posts { get; set; }
         public Category Category { get; set; }
     }
 }

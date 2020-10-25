@@ -1,32 +1,44 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ZBlog.Model
+namespace ZBlog.Data.Entity
 {
-    [Table("links")]
-    public class Link
+    [Table("link")]
+    public class Link:EntityBase
     {
+        /// <summary>
+        /// id
+        /// </summary>
+        [Key]
+        [Column("id")]
         public long Id { get; set; }
+        /// <summary>
+        /// Logo
+        /// </summary>
+        [Column("logo")]
         public string Logo { get; set; }
+        /// <summary>
+        /// Name
+        /// </summary>
+        [Column("name")]
+        [Required]
         public string Name { get; set; }
+        /// <summary>
+        /// Priority
+        /// </summary>
+        [Column("priority")]
+        [Required]
         public int Priority { get; set; }
-        public string Team { get; set; }
+        /// <summary>
+        /// Url
+        /// </summary>
+        [Column("url")]
+        [Required]
         public string Url { get; set; }
+        /// <summary>
+        /// Description
+        /// </summary>
+        [Column("description")]
         public string Description { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Column("create_time")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd  HH:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime CreateTime { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        [Column("update_time")]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd  HH:mm:ss}", ApplyFormatInEditMode = true)]
-        public DateTime UpdateTime { get; set; }
     }
 }

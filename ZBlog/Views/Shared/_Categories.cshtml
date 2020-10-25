@@ -3,31 +3,17 @@
 @{
     var categories = _context.Categories.ToList();
 }
-<!-- Categories Widget -->
 <div class="card my-4">
-    <h5 class="card-header">分类</h5>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                    @foreach (var category in categories.Where(category => categories.IndexOf(category) % 2 == 0))
-                    {
-                        <li>
-                            <a href="/category/list/@(category.Slug)" >@category.Name</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-            <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                    @foreach (var category in categories.Where(category => categories.IndexOf(category) % 2 == 1))
-                    {
-                        <li>
-                            <a href="/category/list/@(category.Slug)" >@category.Name</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-        </div>
+    <div class="card-header">
+        分类
     </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var category in categories)
+        {
+            <li class="list-group-item">
+                <a href="/category/list/@(category.Slug)"> @category.Name</a>
+            </li>
+        }
+
+    </ul>
 </div>
